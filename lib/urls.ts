@@ -1,6 +1,7 @@
 import * as qs from "querystring";
 
-const baseURL: string = process.env.API_BASE_URL || "https://api.line.me/v2/bot/";
+const baseURL: string =
+  process.env.API_BASE_URL || "https://api.line.me/v2/bot/";
 
 const apiURL = (path: string, query?: object) =>
   baseURL + path + (query ? `?${qs.stringify(query)}` : "");
@@ -31,3 +32,14 @@ export const roomMemberIds = (roomId: string, start?: string) =>
 export const leaveGroup = (groupId: string) => apiURL(`group/${groupId}/leave`);
 
 export const leaveRoom = (roomId: string) => apiURL(`room/${roomId}/leave`);
+
+export const richMenu = (richMenuId?: string) =>
+  apiURL("richmenu" + (richMenuId ? `/${richMenuId}` : ""));
+
+export const richMenuList = () => apiURL(`richmenu/list`);
+
+export const userRichMenu = (userId: string, richMenuId?: string) =>
+  apiURL(`user/${userId}/richmenu` + (richMenuId ? `/${richMenuId}` : ""));
+
+export const richMenuContent = (richMenuId: string) =>
+  apiURL(`richmenu/${richMenuId}/content`);

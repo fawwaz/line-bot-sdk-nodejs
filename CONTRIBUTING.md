@@ -1,8 +1,8 @@
 # How to contribute to LINE Bot SDK for Node.js
 
 First of all, thank you so much for taking your time to contribute! LINE Bot SDK
-for Node.js is not very different from any other open source projects you are
-aware of. It will be amazing if you could help us by doing any of the following:
+for Node.js is not very different from any other open source projects. It will
+be fantastic if you help us by doing any of the following:
 
 - File an issue in [the issue tracker](https://github.com/line/line-bot-sdk-nodejs/issues)
   to report bugs and propose new features and improvements.
@@ -17,7 +17,6 @@ Here are each top-level directory explained:
 
 * `lib`: TypeScript source code. You may modify files under this directory.
 * `test`: Mocha test suites. Please add tests for modification if possible.
-* `types`: Project-level type declarations
 * `examples`: Example projects using this SDK
 * `docs`: [GitBook](https://www.gitbook.com/) markdowns for project documentation
 * `tools`: Useful tools
@@ -25,7 +24,8 @@ Here are each top-level directory explained:
 Also, you may use the following npm scripts for development:
 
 * `npm run test`: Run test suites in `test`.
-* `npm run lint`: Lint source code with [TSLint](https://github.com/palantir/tslint)
+* `npm run format`: Format source code with [Prettier](https://github.com/prettier/prettier)
+* `npm run format:check`: Silently run `format` and report formatting errors
 * `npm run build`: Build TypeScript code into JavaScript. The built files will
   be placed in `dist/`.
 * `npm run docs`: Build GitBook docs and serve a doc server

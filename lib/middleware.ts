@@ -1,15 +1,20 @@
 import { raw } from "body-parser";
 import * as http from "http";
 import { JSONParseError, SignatureValidationFailed } from "./exceptions";
+import * as Types from "./types";
 import validateSignature from "./validate-signature";
 
 export type Request = http.IncomingMessage & { body: any };
 export type Response = http.ServerResponse;
 export type NextCallback = (err?: Error) => void;
 
-export type Middleware = (req: Request, res: Response, next: NextCallback) => void;
+export type Middleware = (
+  req: Request,
+  res: Response,
+  next: NextCallback,
+) => void;
 
-export default function middleware(config: Line.Config & Line.MiddlewareConfig): Middleware {
+export default function middleware(config: Types.MiddlewareConfig): Middleware {
   if (!config.channelSecret) {
     throw new Error("no channel secret");
   }
@@ -19,22 +24,22 @@ export default function middleware(config: Line.Config & Line.MiddlewareConfig):
   return (req, res, next) => {
     // header names are lower-cased
     // https://nodejs.org/api/http.html#http_message_headers
-    let signature: any;
-    if (!process.env.TEST) {
-      signature = req.headers["x-line-signature"] as string;
+    const signature = req.headers["x-line-signature"] as string;
 
-      if (!signature) {
-        next(new SignatureValidationFailed("no signature"));
-        return;
-      }
+    if (!signature) {
+      next(new SignatureValidationFailed("no signature"));
+      return;
     }
 
     const validate = (body: string | Buffer) => {
-      if (!process.env.TEST) {
-        if (!validateSignature(body, secret, signature)) {
-          next(new SignatureValidationFailed("signature validation failed", signature));
-          return;
-        }
+      if (!validateSignature(body, secret, signature)) {
+        next(
+          new SignatureValidationFailed(
+            "signature validation failed",
+            signature,
+          ),
+        );
+        return;
       }
 
       const strBody = Buffer.isBuffer(body) ? body.toString() : body;
